@@ -4,12 +4,12 @@ import math
 
 class Unshredder(object):
     def __init__(self, inputfilename, outputFilename):
-        self.__inputFilename = inputfilename
+        self.__inputFilename  = inputfilename
         self.__outputFilename = outputFilename
         self.__loadImage()
 
     def __loadImage(self):
-        self.__image = Image.open(self.__inputFilename)
+        self.__image     = Image.open(self.__inputFilename)
         self.__imageSize = self.__image.size
         self.__imageData =     self.__image.getdata()
         self.__shredSize = 32
@@ -40,7 +40,7 @@ class Unshredder(object):
                         for col1 in xrange(0, self.__shredCount) 
                             for col2 in xrange(0, self.__shredCount)
                                 if col1 != col2 ])
-
+        
         sortedShreds      = [[-1, -1] for i in xrange(0, self.__shredCount)]
         joinedShredCount = 0
 
@@ -54,18 +54,18 @@ class Unshredder(object):
 
         return sortedShreds
 
-    def __getLastShredIndex(self, sortedShreds, index = 0):
-        if sortedShreds[index][1] > 0:
+    def __getFirstShredIndex(self, sortedShreds, index = 0):
+        if sortedShreds[index][1] >= 0:
             index += 1
-            return self.__getLastShredIndex(sortedShreds, index)
+            return self.__getFirstShredIndex(sortedShreds, index)
         else:
             return index
 
     def __createNewImageFromSortedShreds(self, sortedShreds, start):
-        newImage      = Image.new('RGB', self.__imageSize)
+        newImage     = Image.new('RGB', self.__imageSize)
         sortedShreds = self.__compare()
-        col1          = start
-
+        col1         = start
+        
         for col2 in xrange(0, self.__shredCount):
             col1x1 = col1 * self.__shredSize
             col1x2 = col1x1 + self.__shredSize
@@ -78,7 +78,7 @@ class Unshredder(object):
 
     def make(self):
         sortedShreds = self.__compare()
-        start          = self.__getLastShredIndex(sortedShreds)
+        start        = self.__getFirstShredIndex(sortedShreds)
         self.__createNewImageFromSortedShreds(sortedShreds, start)
 
 
