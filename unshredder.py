@@ -21,9 +21,9 @@ class Unshredder(object):
         loads the image from the specified input file at 
         construction.
         """
-        self.__image     = Image.open(self.__inputFilename)
+        self.__image = Image.open(self.__inputFilename)
         self.__imageSize = self.__image.size
-        self.__imageData =     self.__image.getdata()
+        self.__imageData = self.__image.getdata()
         self.__shredSize = 32
         self.__shredCount = self.__imageSize[0] / self.__shredSize
 
@@ -55,7 +55,7 @@ class Unshredder(object):
         # This algorithm is not working as properly.
         # return sum( [ abs(color1 - color2) for color1, color2 in zip(pixel1, pixel2) ] ) 
 
-    def __compare_columns(self, col1, col2, diff = 0, y = 0):
+    def __compare_columns(self, col1, col2, diff=0, y=0):
         """
         compare the specified columns for color difference.
 
@@ -97,7 +97,7 @@ class Unshredder(object):
 
         return sortedShreds
 
-    def __get_first_shred_index(self, sortedShreds, index = 0):
+    def __get_first_shred_index(self, sortedShreds, index=0):
         """
         returns index of first shred.
 
@@ -130,7 +130,7 @@ class Unshredder(object):
         for col2 in xrange(0, self.__shredCount):
             col1x1 = col1 * self.__shredSize
             col1x2 = col1x1 + self.__shredSize
-            shred  = self.__image.crop((col1x1, 0, col1x2, self.__imageSize[1] -1))
+            shred = self.__image.crop((col1x1, 0, col1x2, self.__imageSize[1] -1))
             col2x1 = self.__shredSize * col2
             newImage.paste(shred, (col2x1, 0))
             col1 = sortedShreds[col1][0]
@@ -142,7 +142,7 @@ class Unshredder(object):
         performs unshredding process.
         """
         sortedShreds = self.__compare()
-        start        = self.__get_first_shred_index(sortedShreds)
+        start = self.__get_first_shred_index(sortedShreds)
         self.__create_image(sortedShreds, start)
 
 
